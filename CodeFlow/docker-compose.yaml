@@ -1,0 +1,16 @@
+services:
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: postgres_codeflow
+    restart: always
+    environment:
+      POSTGRES_DB: codeflow_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: Farmacos123qwe
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+    postgres_data:
