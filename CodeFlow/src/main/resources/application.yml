@@ -1,3 +1,7 @@
+#Si cambias el puerto, sin avisar a J - M - I te la veras con ellos
+server:
+  port:8081
+
 spring:
   application:
     name: CodeFlow
@@ -8,9 +12,33 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  #Si no me equivoco, esto envia la validacion de los tokens cuando se usa Keycloak
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/codeflow-realm
+          jwk-set-uri: http://localhost:8080/realms/codeflow-realm/protocol/openid-connect/certs
+
+#Para la documentacion usando swagger de swagger
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+#La mierda para los niveles de los logs y que se muertren en la consola cuando la autenticacion falla
+logging:
+  level:
+    root: INFO
+    com.flow.backend: DEBUG
+    org.springframework.security: DEBUG
