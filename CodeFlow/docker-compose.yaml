@@ -1,6 +1,7 @@
+#Para montar el contenedor de PostgreSQL
 services:
   postgres-db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: postgres_codeflow
     restart: always
     environment:
@@ -10,7 +11,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
+      - postgres_data:/var/lib/postgresql
+# Para el contenedor de keyclaok
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7
+    container_name: keycloak_codeflow
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres-db:5432/codeflow_db
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: Farmacos123qwe
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: 123qwe
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+  # Si eliminas esto por que se feo, se jode la transferencia de datos para el contenedor y te la veras con M
 volumes:
     postgres_data:
