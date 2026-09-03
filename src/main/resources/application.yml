@@ -6,9 +6,9 @@ spring:
   application:
     name: CodeFlow
   datasource:
-    url: jdbc:postgresql://localhost:5432/codeflow_db
+    url: jdbc:postgresql://localhost:5433/codeflow_db
     username: root
-    password: Farmacos123qwe
+    password: "Farmacos123qwe"
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
