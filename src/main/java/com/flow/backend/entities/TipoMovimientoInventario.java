@@ -1,0 +1,15 @@
+package com.flow.backend.entities;
+
+public enum TipoMovimientoInventario
+{
+    ENTRADA_COMPRA,
+    SALIDA_VENTA,
+    DEVOLUCION_VENTA_INGRESO,
+    DEVOLUCION_PROVEEDOR_SALIDA,
+    AJUSTE_POSITIVO,
+    AJUSTE_NEGATIVO,
+    MERMA_VENCIMIENTO,
+    MERMA_DANIO,
+    TRASLADO_SALIDA,
+    TRASLADO_ENTRADA
+}
