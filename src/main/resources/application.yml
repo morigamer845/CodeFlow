@@ -24,8 +24,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/codeflow-realm
-          jwk-set-uri: http://localhost:8080/realms/codeflow-realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/codeflow
+          jwk-set-uri: http://localhost:8080/realms/codeflow/protocol/openid-connect/certs
 
 #Para la documentacion usando swagger de swagger
 springdoc:
