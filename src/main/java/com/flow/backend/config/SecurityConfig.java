@@ -15,11 +15,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
@@ -38,10 +38,36 @@ public class SecurityConfig {
     }
 
     @Bean
-    JwtAuthenticationConverter authenticationConverter(AuthoritiesConverter authoritiesConverter){
-        var authorizationConverter = new JwtAuthenticationConverter();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "localhost:5173"
+        ));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return source;
+    }
+
+    @Bean
+    JwtAuthenticationConverter authenticationConverter(){
+        JwtAuthenticationConverter authorizationConverter = new JwtAuthenticationConverter();
         authorizationConverter.setJwtGrantedAuthoritiesConverter(
-                jwt -> authoritiesConverter.convert(jwt.getClaims())
+            jwt -> {
+                Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+                extractRolesFromClaim(jwt, "realm_access", authorities);
+                extractRolesFromClaim(jwt, "resource_access", authorities, "codeflow");
+
+                return authorities;
+            }
         );
         return authorizationConverter;
     }
@@ -60,18 +86,51 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(requests -> {
             requests.requestMatchers(
-                    "/hello",
                     "/swagger-ui.html",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
                     "/actuator/**"
             ).permitAll();
-            requests.requestMatchers("/api/**").authenticated();
+            requests.requestMatchers("/**").authenticated();
             requests.anyRequest().denyAll();
         });
 
         http.csrf(AbstractHttpConfigurer::disable);
 
+        http.cors(cors -> {
+            cors.configurationSource(corsConfigurationSource());
+        });
+
+        http.formLogin(AbstractHttpConfigurer::disable);
+
+        http.httpBasic(AbstractHttpConfigurer::disable);
+
         return http.build();
+    }
+
+    private void extractRolesFromClaim(Jwt jwt, String claimName, Collection<GrantedAuthority> authorities){
+        extractRolesFromClaim(jwt, claimName, authorities, null);
+    }
+
+    private void extractRolesFromClaim(Jwt jwt, String claimName, Collection<GrantedAuthority> authorities, String resource) {
+        Map<String, Object> claim = jwt.getClaim(claimName);
+        if (claim != null && claim.containsKey("roles")){
+            List<String> roles = (List<String>) claim.get("roles");
+            for (String role: roles){
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+            }
+        }
+
+        if (resource != null) {
+            Map<String, Object> resourceAccess = jwt.getClaim(claimName);
+            if (resourceAccess != null && resourceAccess.containsKey(resource)) {
+                List<String> resourceRoles = (List<String>) ((Map<String, Object>) resourceAccess.get(resource)).get("roles");
+                if (resourceRoles != null) {
+                    for (String role: resourceRoles) {
+                        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                    }
+                }
+            }
+        }
     }
 }
