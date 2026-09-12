@@ -35,12 +35,10 @@ public class DevolucionVenta {
     @Column(name = "estado", nullable = false)
     private EstadoDevolucion estado = EstadoDevolucion.APROBADA;
 
+    @Column(name = "id_usuario", length = 360, nullable = false)
+    private String idUsuario;
 
     @ManyToOne
     @JoinColumn(name = "id_venta")
     private Venta venta;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_autoriza")
-    private Usuario usuario;
 }

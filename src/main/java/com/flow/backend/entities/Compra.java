@@ -50,13 +50,12 @@ public class Compra {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
+    @Column(name = "id_usuario", length = 360, nullable = false)
+    private String idUsuario;
+
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_inventario_destino")

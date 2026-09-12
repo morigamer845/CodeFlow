@@ -54,13 +54,12 @@ public class Venta {
     @Column(name = "observaciones", length = 255)
     private String observaciones;
 
+    @Column(name = "id_usuario", length = 360, nullable = false)
+    private String idUsuario;
+
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
 
     @OneToMany
     @JoinColumn(name = "id_inventario_origen")

@@ -46,6 +46,9 @@ public class MovimientoInventario {
     @Column(name = "fecha_movimiento", nullable = false)
     private OffsetDateTime fechaMovimiento = OffsetDateTime.now();
 
+    @Column(name = "id_usuario", length = 360, nullable = false)
+    private String idUsuario;
+
     @ManyToOne
     @JoinColumn(name = "id_inventario")
     private Inventario inventario;
@@ -53,8 +56,4 @@ public class MovimientoInventario {
     @ManyToOne
     @JoinColumn(name = "id_lote")
     private Lote lote;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
 }
