@@ -7,7 +7,9 @@ import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -81,9 +83,12 @@ public class Producto {
     @Column(name = "actualizado_en", nullable = false)
     private OffsetDateTime actualizadoEn = OffsetDateTime.now();
 
-
-    @OneToMany
-    @JoinColumn(name = "id_categoria")
+    @ManyToMany
+    @JoinTable(
+            name = "producto_categoria",
+            joinColumns = @JoinColumn(name = "id_producto"),
+            inverseJoinColumns = @JoinColumn(name = "id_categoria")
+    )
     private List<Categoria> categorias;
 
     @ManyToOne

@@ -24,4 +24,5 @@ public class Categoria {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
+
 }
