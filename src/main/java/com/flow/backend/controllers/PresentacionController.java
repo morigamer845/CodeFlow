@@ -43,6 +43,7 @@ public class PresentacionController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(presentacion.get());
     }
 
@@ -62,6 +63,7 @@ public class PresentacionController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         presentacionRepository.deleteById(id);
 
         return ResponseEntity.ok().build();

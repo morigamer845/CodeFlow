@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 public class VentaController {
+
     private final VentaRepository ventaRepository;
 
     public VentaController(VentaRepository ventaRepository) {
@@ -42,6 +43,7 @@ public class VentaController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(venta.get());
     }
 
@@ -61,6 +63,7 @@ public class VentaController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         ventaRepository.deleteById(id);
 
         return ResponseEntity.ok().build();

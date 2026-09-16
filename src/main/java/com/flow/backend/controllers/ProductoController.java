@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 public class ProductoController {
+
     private final ProductoRepository productoRepository;
 
     public ProductoController(ProductoRepository productoRepository) {
@@ -41,6 +43,7 @@ public class ProductoController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(producto.get());
     }
 
@@ -60,6 +63,7 @@ public class ProductoController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         productoRepository.deleteById(id);
 
         return ResponseEntity.ok().build();

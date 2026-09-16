@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 @RestController
 public class PagoVentaController {
     private final PagoVentaRepository pagoVentaRepository;
@@ -38,10 +39,11 @@ public class PagoVentaController {
         Optional<PagoVenta> pagoVentaEntity = pagoVentaRepository.findById(id);
         if(pagoVentaEntity.isEmpty()){
             ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, " Id del pago venta Invalido");
-            problemDetail.setTitle("Parameetro de peticion invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }
+        
         return ResponseEntity.ok().body(pagoVentaEntity.get());
     }
 
@@ -55,14 +57,15 @@ public class PagoVentaController {
     @DeleteMapping("/api/pagos_ventas/{id}")
     public ResponseEntity<PagoVenta> deletePagoVenta(@PathVariable Integer id){
         Optional<PagoVenta> pagoVenta = pagoVentaRepository.findById(id);
-    if(pagoVenta.isEmpty()){
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, " Id del pago venta Invalido");
+        if(pagoVenta.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, " Id del pago venta Invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
-        return ResponseEntity.of(problemDetail).build();
+            return ResponseEntity.of(problemDetail).build();
+        }
+
+        pagoVentaRepository.deleteById(id);
+
+        return ResponseEntity.ok().build();
     }
-
-    pagoVentaRepository.deleteById(id);
-    return ResponseEntity.ok().build();
-    }
-
 }

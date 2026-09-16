@@ -43,6 +43,7 @@ public class MovimientoInventarioController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(movimientoInventario.get());
     }
 
@@ -62,6 +63,7 @@ public class MovimientoInventarioController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         movimientoInventarioRepository.deleteById(id);
 
         return ResponseEntity.ok().build();

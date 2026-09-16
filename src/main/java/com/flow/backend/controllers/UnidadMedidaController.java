@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 public class UnidadMedidaController {
+
     private final UnidadMedidaRepository unidadMedidaRepository;
 
     public UnidadMedidaController(UnidadMedidaRepository unidadMedidaRepository) {
@@ -42,6 +43,7 @@ public class UnidadMedidaController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(unidadMedida.get());
     }
 
@@ -61,6 +63,7 @@ public class UnidadMedidaController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         unidadMedidaRepository.deleteById(id);
 
         return ResponseEntity.ok().build();

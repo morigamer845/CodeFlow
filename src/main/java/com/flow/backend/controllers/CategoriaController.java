@@ -49,9 +49,9 @@ class CategoriaController {
 
     @PutMapping("/api/categorias")
     public ResponseEntity<Categoria> updateCategoria(@RequestBody Categoria updateCategoria){
-        Categoria returnCategoria = categoriaRepository.save(updateCategoria);
+        Categoria categoria = categoriaRepository.save(updateCategoria);
 
-        return ResponseEntity.ok(returnCategoria);
+        return ResponseEntity.ok(categoria);
     }
 
     @DeleteMapping("/api/categorias/{id}")

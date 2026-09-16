@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 public class ProveedorController {
+
     private final ProveedorRepository proveedorRepository;
 
     public ProveedorController(ProveedorRepository proveedorRepository) {
@@ -42,6 +43,7 @@ public class ProveedorController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         return ResponseEntity.ok(proveedor.get());
     }
 
@@ -61,6 +63,7 @@ public class ProveedorController {
 
             return ResponseEntity.of(problemDetail).build();
         }
+
         proveedorRepository.deleteById(id);
 
         return ResponseEntity.ok().build();
