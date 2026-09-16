@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jspecify.annotations.NonNull;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -25,4 +27,6 @@ public class Categoria {
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
 
+    @ManyToMany(mappedBy = "categorias")
+    private List<Producto> productos;
 }
