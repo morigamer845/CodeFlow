@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "detalle_compras")
-@Check(constraints = "catidad > 0")
+@Check(constraints = "cantidad > 0")
 @Check(constraints = "precio_unitario >= 0")
 @Check(constraints = "subtotal >= 0")
 public class DetalleCompra {
@@ -21,7 +21,7 @@ public class DetalleCompra {
     @Column(name = "id_detalle_compra")
     private Integer id;
 
-    @Column(name = "catidad", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer catidad;
 
     @Column(name = "precio_unitario", precision = 12, scale = 2, nullable = false)
@@ -39,7 +39,13 @@ public class DetalleCompra {
     @JoinColumn(name = "id_producto")
     private List<Producto> productos;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "id_lote")
-    private List<Lote> lotes;
+    private Lote lotes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
+
+
 }

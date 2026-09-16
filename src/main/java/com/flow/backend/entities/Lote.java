@@ -38,7 +38,7 @@ public class Lote {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
-    @OneToMany
-    @JoinColumn(name = "id_producto")
+
+    @OneToMany(mappedBy = "lote")
     private List<Producto> productos;
 }

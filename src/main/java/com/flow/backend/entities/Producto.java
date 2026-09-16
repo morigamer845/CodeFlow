@@ -102,4 +102,8 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "id_unidad_medida")
     private UnidadMedida unidadMedida;
+
+    @ManyToOne
+    @JoinColumn(name = "id_lote")
+    private Lote lote;
 }
