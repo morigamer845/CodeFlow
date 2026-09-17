@@ -1,6 +1,6 @@
 package com.flow.backend.controllers;
 
-import com.flow.backend.entities.Cliente;
+import com.flow.backend.entities.ClienteEntity;
 import com.flow.backend.repositories.ClienteRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -16,30 +16,30 @@ class ClienteController {
 
     private final ClienteRepository clienteRepository;
 
-    public ClienteController(ClienteRepository clienteRepository){
+    ClienteController(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
     @PostMapping("/api/clientes")
-    public ResponseEntity<Cliente> createCliente(@RequestBody Cliente createCliente){
-        Cliente cliente = clienteRepository.save(createCliente);
+    public ResponseEntity<ClienteEntity> createCliente(@RequestBody ClienteEntity createCliente){
+        ClienteEntity cliente = clienteRepository.save(createCliente);
 
-        return new ResponseEntity<>(cliente, HttpStatus.CREATED);
+        return new ResponseEntity<>(cliente, HttpStatus.CREATED );
     }
 
     @GetMapping("/api/clientes")
-    public ResponseEntity<List<Cliente>> getClientes(){
-        List<Cliente> clientes = clienteRepository.findAll();
+    public ResponseEntity<List<ClienteEntity>> getClientes(){
+        List<ClienteEntity> clientes = clienteRepository.findAll();
 
         return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/api/clientes/{id}")
-    public ResponseEntity<Cliente> getCliente(@PathVariable Integer id){
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if (cliente.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de cliente invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    public ResponseEntity<ClienteEntity> getCliente(@PathVariable Integer id){
+        Optional<ClienteEntity> cliente = clienteRepository.findById(id);
+        if (cliente.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de cliente invalido!");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }
@@ -48,18 +48,18 @@ class ClienteController {
     }
 
     @PutMapping("/api/clientes")
-    public ResponseEntity<Cliente> updateCliente(@RequestBody Cliente updateCliente){
-        Cliente cliente = clienteRepository.save(updateCliente);
+    public ResponseEntity<ClienteEntity> updateCliente(@RequestBody ClienteEntity updateCliente){
+        ClienteEntity cliente = clienteRepository.save(updateCliente);
 
         return ResponseEntity.ok(cliente);
     }
 
     @DeleteMapping("/api/clientes/{id}")
     public ResponseEntity<?> deleteCliente(@PathVariable Integer id){
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if (cliente.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de cliente invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
+        Optional<ClienteEntity> cliente = clienteRepository.findById(id);
+        if (cliente.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de cliente invalido!");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }

@@ -1,8 +1,7 @@
 package com.flow.backend.controllers;
 
-import com.flow.backend.entities.Lote;
+import com.flow.backend.entities.LoteEntity;
 import com.flow.backend.repositories.LoteRepository;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -22,25 +21,25 @@ class LoteController {
     }
 
     @PostMapping("/api/lotes")
-    public ResponseEntity<Lote> createLote(@RequestBody Lote createLote){
-        Lote lote = loteRepository.save(createLote);
+    public ResponseEntity<LoteEntity> createLote(@RequestBody LoteEntity createLote){
+        LoteEntity lote = loteRepository.save(createLote);
 
         return new ResponseEntity<>(lote, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/lotes")
-    public ResponseEntity<List<Lote>> getLotes(){
-        List<Lote> lotes = loteRepository.findAll();
+    public ResponseEntity<List<LoteEntity>> getLotes(){
+        List<LoteEntity> lotes = loteRepository.findAll();
 
         return ResponseEntity.ok(lotes);
     }
 
     @GetMapping("/api/lotes/{id}")
-    public ResponseEntity<Lote> getLote(@PathVariable Integer id){
-        Optional<Lote> lote = loteRepository.findById(id);
-        if(lote.isEmpty()){
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de lote invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    public ResponseEntity<LoteEntity> getLote(@PathVariable Integer id){
+        Optional<LoteEntity> lote = loteRepository.findById(id);
+        if (lote.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de lote invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }
@@ -49,18 +48,18 @@ class LoteController {
     }
 
     @PutMapping("/api/lotes")
-    public ResponseEntity<Lote> updateLote(@RequestBody Lote updateLote){
-        Lote lote = loteRepository.save(updateLote);
+    public ResponseEntity<LoteEntity> updateLote(@RequestBody LoteEntity updateLote){
+        LoteEntity lote = loteRepository.save(updateLote);
 
         return ResponseEntity.ok(lote);
     }
 
     @DeleteMapping("/api/lotes/{id}")
     public ResponseEntity<?> deleteLote(@PathVariable Integer id){
-        Optional<Lote> lote = loteRepository.findById(id);
-        if(lote.isEmpty()){
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de lote invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
+        Optional<LoteEntity> lote = loteRepository.findById(id);
+        if (lote.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de lote invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }

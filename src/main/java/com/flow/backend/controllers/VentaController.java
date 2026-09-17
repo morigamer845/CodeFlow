@@ -1,45 +1,45 @@
 package com.flow.backend.controllers;
 
+import com.flow.backend.entities.VentaEntity;
 import com.flow.backend.repositories.VentaRepository;
-import com.flow.backend.entities.Venta;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class VentaController {
+@Controller
+class VentaController {
 
     private final VentaRepository ventaRepository;
 
-    public VentaController(VentaRepository ventaRepository) {
+    VentaController(VentaRepository ventaRepository) {
         this.ventaRepository = ventaRepository;
     }
 
     @PostMapping("/api/ventas")
-    public ResponseEntity<Venta> createVenta(@RequestBody Venta createVenta) {
-        Venta venta = ventaRepository.save(createVenta);
+    public ResponseEntity<VentaEntity> createVenta(@RequestBody VentaEntity createVenta) {
+        VentaEntity venta = ventaRepository.save(createVenta);
 
         return new ResponseEntity<>(venta, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/ventas")
-    public ResponseEntity<List<Venta>> getVentas() {
-        List<Venta> ventas = ventaRepository.findAll();
+    public ResponseEntity<List<VentaEntity>> getVentas() {
+        List<VentaEntity> ventas = ventaRepository.findAll();
 
         return ResponseEntity.ok(ventas);
     }
 
     @GetMapping("/api/ventas/{id}")
-    public ResponseEntity<Venta> getVenta(@PathVariable Integer id) {
-        Optional<Venta> venta = ventaRepository.findById(id);
-        if (venta.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, " Id de la Venta Invalido");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    public ResponseEntity<VentaEntity> getVenta(@PathVariable Integer id) {
+        Optional<VentaEntity> venta = ventaRepository.findById(id);
+        if(venta.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de venta invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }
@@ -48,18 +48,18 @@ public class VentaController {
     }
 
     @PutMapping("/api/ventas")
-    public ResponseEntity<Venta> updateVenta(@RequestBody Venta venta) {
-        Venta returnVenta = ventaRepository.save(venta);
+    public ResponseEntity<VentaEntity> updateVenta(@RequestBody VentaEntity updateVenta) {
+        VentaEntity venta = ventaRepository.save(updateVenta);
 
-        return ResponseEntity.ok(returnVenta);
+        return ResponseEntity.ok(venta);
     }
 
     @DeleteMapping("/api/ventas/{id}")
-    public ResponseEntity<Venta> deleteVenta(@PathVariable Integer id) {
-        Optional<Venta> venta = ventaRepository.findById(id);
-        if (venta.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, " Id de la Venta Invalido");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    public ResponseEntity<?> deleteVenta(@PathVariable Integer id) {
+        Optional<VentaEntity> venta = ventaRepository.findById(id);
+        if(venta.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de venta invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }

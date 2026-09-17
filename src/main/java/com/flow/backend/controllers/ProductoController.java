@@ -1,65 +1,65 @@
 package com.flow.backend.controllers;
 
+import com.flow.backend.entities.ProductoEntity;
 import com.flow.backend.repositories.ProductoRepository;
-import com.flow.backend.entities.Producto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-public class ProductoController {
+@Controller
+class ProductoController {
 
     private final ProductoRepository productoRepository;
 
-    public ProductoController(ProductoRepository productoRepository) {
+    ProductoController(ProductoRepository productoRepository){
         this.productoRepository = productoRepository;
     }
 
     @PostMapping("/api/productos")
-    public ResponseEntity<Producto> createProducto(@RequestBody Producto createProducto) {
-        Producto producto = productoRepository.save(createProducto);
-
+    public ResponseEntity<ProductoEntity> createProducto(@RequestBody ProductoEntity createProducto) {
+        ProductoEntity producto = productoRepository.save(createProducto);
+        
         return new ResponseEntity<>(producto, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/productos")
-    public ResponseEntity<List<Producto>> getProductos() {
-        List<Producto> productos = productoRepository.findAll();
-
+    public ResponseEntity<List<ProductoEntity>> getProductos() {
+        List<ProductoEntity> productos = productoRepository.findAll();
+        
         return ResponseEntity.ok(productos);
     }
 
     @GetMapping("/api/productos/{id}")
-    public ResponseEntity<Producto> getProducto(@PathVariable Integer id) {
-        Optional<Producto> producto = productoRepository.findById(id);
-        if (producto.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, " Id del Producto Invalido");
-            problemDetail.setTitle("Parametro de peticion invalida");
-
+    public ResponseEntity<ProductoEntity> getProducto(@PathVariable Integer id) {
+        Optional<ProductoEntity> producto = productoRepository.findById(id);
+        if (producto.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de producto invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
+            
             return ResponseEntity.of(problemDetail).build();
         }
-
+        
         return ResponseEntity.ok(producto.get());
     }
 
     @PutMapping("/api/productos")
-    public ResponseEntity<Producto> updateProducto(@RequestBody Producto producto) {
-        Producto returnProducto = productoRepository.save(producto);
+    public ResponseEntity<ProductoEntity> updateProducto(@RequestBody ProductoEntity updateProducto) {
+        ProductoEntity producto = productoRepository.save(updateProducto);
 
-        return ResponseEntity.ok(returnProducto);
+        return ResponseEntity.ok(producto);
     }
 
     @DeleteMapping("/api/productos/{id}")
-    public ResponseEntity<Producto> deleteProducto(@PathVariable Integer id) {
-        Optional<Producto> producto = productoRepository.findById(id);
-        if (producto.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, " Id del Producto Invalido");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    public ResponseEntity<?> deleteProducto(@PathVariable Integer id) {
+        Optional<ProductoEntity> producto = productoRepository.findById(id);
+        if (producto.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de producto invalido");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }

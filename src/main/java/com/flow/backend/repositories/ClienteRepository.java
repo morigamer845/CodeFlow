@@ -1,7 +1,7 @@
 package com.flow.backend.repositories;
 
-import com.flow.backend.entities.Cliente;
+import com.flow.backend.entities.ClienteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
+public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 }

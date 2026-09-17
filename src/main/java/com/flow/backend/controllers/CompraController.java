@@ -1,6 +1,6 @@
 package com.flow.backend.controllers;
 
-import com.flow.backend.entities.Compra;
+import com.flow.backend.entities.CompraEntity;
 import com.flow.backend.repositories.CompraRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -21,25 +21,25 @@ class CompraController {
     }
 
     @PostMapping("/api/compras")
-    public ResponseEntity<Compra> createCompra(@RequestBody Compra createCompra){
-        Compra compra = compraRepository.save(createCompra);
+    public ResponseEntity<CompraEntity> createCompra(@RequestBody CompraEntity createCompra){
+        CompraEntity compra = compraRepository.save(createCompra);
 
         return new ResponseEntity<>(compra, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/compras")
-    public ResponseEntity<List<Compra>> getCompras(){
-        List<Compra> compras = compraRepository.findAll();
+    public ResponseEntity<List<CompraEntity>> getCompras(){
+        List<CompraEntity> compras = compraRepository.findAll();
 
         return ResponseEntity.ok(compras);
     }
 
-    @GetMapping("api/compras/{id}")
-    public ResponseEntity<Compra> getCompra(@PathVariable Integer id){
-        Optional<Compra> compra = compraRepository.findById(id);
-        if (compra.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de compra invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
+    @GetMapping("/api/compras/{id}")
+    public ResponseEntity<CompraEntity> getCompra(@PathVariable Integer id){
+        Optional<CompraEntity> compra = compraRepository.findById(id);
+        if(compra.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de compra invalido!");
+            problemDetail.setTitle("Parametro de peticion invalido");
 
             return ResponseEntity.of(problemDetail).build();
         }
@@ -48,24 +48,24 @@ class CompraController {
     }
 
     @PutMapping("/api/compras")
-    public ResponseEntity<Compra> updateCompra(@RequestBody Compra updateCompra){
-        Compra compra = compraRepository.save(updateCompra);
+    public ResponseEntity<CompraEntity> updateCompra(@RequestBody CompraEntity updateCompra){
+        CompraEntity compra = compraRepository.save(updateCompra);
 
         return ResponseEntity.ok(compra);
     }
-
+    
     @DeleteMapping("/api/compras/{id}")
     public ResponseEntity<?> deleteCompra(@PathVariable Integer id){
-        Optional<Compra> compra = compraRepository.findById(id);
-        if (compra.isEmpty()) {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de compra invalida");
-            problemDetail.setTitle("Parametro de peticion invalida");
-
+        Optional<CompraEntity> compra = compraRepository.findById(id);
+        if (compra.isEmpty()){
+            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Id de compra invalido!");
+            problemDetail.setTitle("Parametro de peticion invalido");
+            
             return ResponseEntity.of(problemDetail).build();
         }
-
+    
         compraRepository.deleteById(id);
-
+        
         return ResponseEntity.ok().build();
     }
 }

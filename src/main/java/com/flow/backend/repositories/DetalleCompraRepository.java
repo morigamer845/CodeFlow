@@ -1,7 +1,7 @@
 package com.flow.backend.repositories;
 
-import com.flow.backend.entities.DetalleCompra;
+import com.flow.backend.entities.DetalleCompraEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DetalleCompraRepository extends JpaRepository<DetalleCompra, Integer> {
+public interface DetalleCompraRepository extends JpaRepository<DetalleCompraEntity, Integer> {
 }
