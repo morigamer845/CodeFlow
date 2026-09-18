@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,8 +27,8 @@ public class CompraEntity {
     @Column(name = "fecha_emision", nullable = false)
     private LocalDate fechaEmision;
 
-    @Column(name = "total", nullable = false, precision = 12, scale = 2, columnDefinition = "NOT NULL DEFAULT 0.00 CHECK (total >= 0)")
-    private BigDecimal total = BigDecimal.valueOf(0.0);
+    @Column(name = "total", nullable = false, precision = 12, scale = 2, columnDefinition = "NUMERIC(12, 2) NOT NULL DEFAULT 0.00 CHECK (total >= 0)")
+    private BigDecimal total;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "estado", nullable = false)
@@ -42,5 +43,8 @@ public class CompraEntity {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_proveedor", nullable = false)
-    ProveedorEntity proveedor;
+     private ProveedorEntity proveedor;
+
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleCompraEntity> detalles;
 }

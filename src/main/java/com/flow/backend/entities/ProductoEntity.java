@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -49,7 +50,7 @@ public class ProductoEntity {
     @Column(name = "precio_venta", nullable = false, precision = 12, scale = 2, columnDefinition = "NUMERIC(12, 2) NOT NULL CHECK (precio_venta >= precio_compra)")
     private BigDecimal precioVenta;
 
-    @Column(name = "stock_min", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0)")
+    @Column(name = "stock_min", nullable = false, columnDefinition = "INT NOT NULL DEFAULT 5 CHECK (stock_min >= 0)")
     private Integer stockMin = 5;
 
     @Column(name = "requiere_receta", nullable = false)
@@ -61,11 +62,15 @@ public class ProductoEntity {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "lote_id", nullable = false)
-    private LoteEntity lote;
+    @OneToMany
+    @JoinColumn(name = "producto", nullable = false)
+    private List<LoteEntity> lotes;
 
-    @OneToMany(mappedBy = "producto")
-    @OnDelete(action = OnDeleteAction.RESTRICT)
-    private List<CategoriaEntity> categorias;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "productos_categorias",
+            joinColumns = @JoinColumn(name = "id_producto"),
+            inverseJoinColumns = @JoinColumn(name = "id_categoria")
+    )
+    private Set<CategoriaEntity> categorias;
 }

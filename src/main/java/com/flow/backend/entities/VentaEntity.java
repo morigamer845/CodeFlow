@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,6 +22,7 @@ import java.time.OffsetDateTime;
     }
 )
 public class VentaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_venta", nullable = false)
@@ -50,4 +52,6 @@ public class VentaEntity {
     @JoinColumn(name = "id_cliente")
     private ClienteEntity cliente;
 
+    @OneToMany(mappedBy = "venta" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleVentaEntity> detalleVentas;
 }

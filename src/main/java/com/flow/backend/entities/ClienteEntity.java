@@ -6,11 +6,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "clientes")
 public class ClienteEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente", nullable = false)
@@ -27,4 +30,8 @@ public class ClienteEntity {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<VentaEntity> ventas;
+
 }

@@ -34,10 +34,10 @@ public class DetalleVentaEntity {
     @JoinColumn(name = "id_venta", nullable = false)
     private VentaEntity venta;
 
-    @OneToMany
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_producto", nullable = false)
-    private List<ProductoEntity> productos;
+    private ProductoEntity productos;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.RESTRICT)

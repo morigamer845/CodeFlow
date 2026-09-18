@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -23,7 +25,6 @@ public class CategoriaEntity {
     @Column(name = "activo", nullable = false)
     private Boolean activo = Boolean.TRUE;
 
-    @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
-    private ProductoEntity producto;
+    @ManyToMany(mappedBy = "categorias")
+    private Set<ProductoEntity> productos ;
 }

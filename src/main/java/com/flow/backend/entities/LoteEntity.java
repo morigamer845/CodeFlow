@@ -45,7 +45,8 @@ public class LoteEntity {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
-    @OneToMany(mappedBy = "lote")
+    @ManyToOne
     @OnDelete(action = OnDeleteAction.RESTRICT)
-    private List<ProductoEntity> productos;
+    @JoinColumn(name = "id_producto", nullable = false)
+    private ProductoEntity producto;
 }
