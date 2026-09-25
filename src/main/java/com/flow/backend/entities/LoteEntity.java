@@ -1,8 +1,6 @@
 package com.flow.backend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -10,25 +8,25 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(
-    name = "lotes",
-    uniqueConstraints = {
-        @UniqueConstraint(name = "uq_producto_lote", columnNames = {"id_producto","numero_lote"})
-    },
-    indexes = {
-        @Index(name = "idx_lotes_producto_venc", columnList = "id_producto, fecha_vencimiento ASC")
-    }
+        name = "lotes",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_producto_lote", columnNames = {"id_producto", "numero_lote"})
+        },
+        indexes = {
+                @Index(name = "idx_lotes_producto_venc", columnList = "id_producto, fecha_vencimiento ASC")
+        }
 )
 public class LoteEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_lote", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "numero_lote", nullable = false, length = 80)
     private String numeroLote;
@@ -45,7 +43,8 @@ public class LoteEntity {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
-    @ManyToOne
+    // ÚNICA relación con ProductoEntity en toda la clase
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_producto", nullable = false)
     private ProductoEntity producto;

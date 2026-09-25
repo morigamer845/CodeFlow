@@ -62,8 +62,7 @@ public class ProductoEntity {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
-    @OneToMany
-    @JoinColumn(name = "producto", nullable = false)
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<LoteEntity> lotes;
 
     @ManyToMany(fetch = FetchType.LAZY)
