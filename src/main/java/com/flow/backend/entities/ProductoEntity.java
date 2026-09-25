@@ -1,5 +1,6 @@
 package com.flow.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,8 +63,10 @@ public class ProductoEntity {
     @Column(name = "creado_en", nullable = false)
     private OffsetDateTime creadoEn = OffsetDateTime.now();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<LoteEntity> lotes;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

@@ -1,5 +1,6 @@
 package com.flow.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,5 +48,6 @@ public class LoteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.RESTRICT)
     @JoinColumn(name = "id_producto", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "lotes"})
     private ProductoEntity producto;
 }
